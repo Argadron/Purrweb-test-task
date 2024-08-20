@@ -8,7 +8,7 @@ import testPrisma from '../src/prisma.forTest'
 
 const prisma = testPrisma()
 
-describe('AppController (e2e)', () => {
+describe('ColumnController (e2e)', () => {
   let app: INestApplication;
   let testId: number;
   let testColumnId: number;
