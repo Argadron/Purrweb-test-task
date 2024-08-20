@@ -1,19 +1,41 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma.service';
+import { LocalStrategy } from './strategies/jwt.stragety';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { response } from 'express';
+import testPrisma from '../prisma.forTest'
+
+const prisma = testPrisma()
 
 describe('AuthService', () => {
   let service: AuthService;
+  const testNewUser = {
+    email: "hello@mail.ru",
+    password: "12345678"
+  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, PrismaService],
+      imports: [JwtModule.register({
+        secret: "123"
+      })],
+      providers: [AuthService, PrismaService, LocalStrategy, ConfigService, JwtService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('Test register new user', async () => {
+    expect((await service.register(testNewUser, response)).access).toBeDefined();
   });
+
+  afterAll(() => {
+    prisma.user.delete({
+      where: {
+        email: "hello@mail.ru"
+      }
+    })
+  })
 });
