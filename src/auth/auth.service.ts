@@ -16,6 +16,7 @@ export class AuthService {
     ) {}
 
     private async generateTokens(userId: number) {
+        console.log(this.configService.get("JWT_ACCESS_EXPIRES"))
         const access = await this.jwtService.signAsync({
             id: userId,
         }, {
