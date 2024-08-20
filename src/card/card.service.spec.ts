@@ -83,7 +83,7 @@ describe('CardService', () => {
   afterAll(async () => {
     await prisma.card.deleteMany({
       where: {
-        header: "testCard"
+        header: "testcard"
       }
     })
 

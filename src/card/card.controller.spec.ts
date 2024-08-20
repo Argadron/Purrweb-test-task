@@ -28,7 +28,7 @@ describe('CardController', () => {
   beforeAll(async () => {
     const { id } = await prisma.user.create({
       data: {
-        email: "testik@mail.ru",
+        email: "testik2@mail.ru",
         password: "123543543543534"
       }
     })
@@ -100,7 +100,7 @@ describe('CardController', () => {
   afterAll(async () => {
     await prisma.card.deleteMany({
       where: {
-        header: "testCard"
+        header: "testcard"
       }
     })
 

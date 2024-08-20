@@ -111,7 +111,7 @@ describe('CardController (e2e)', () => {
   afterAll(async () => {
     await prisma.card.deleteMany({
         where: {
-          header: "testCard"
+          header: "testcard"
         }
       })
   
@@ -126,7 +126,7 @@ describe('CardController (e2e)', () => {
           id: testUserId
         }
       })
-      
+
     await app.close()
   })
 });
