@@ -46,7 +46,7 @@ export class AuthService {
     }
 
     private addRefreshToResponse(res: Response, token: string) {
-        if (this.configService.get("NODE_ENV")) return;
+        if (this.configService.get("NODE_ENV") === "test") return;
 
         res.cookie(this.configService.get("REFRESH_TOKEN_COOKIE_NAME"), token, {
             httpOnly: true,

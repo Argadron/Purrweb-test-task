@@ -38,7 +38,7 @@ describe('AuthController', () => {
   afterAll(async () => {
     await prisma.user.delete({
       where: {
-        email: "hello@mail.ru"
+        email: "hello1@mail.ru"
       }
     })
   })
