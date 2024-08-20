@@ -12,6 +12,13 @@ const prisma = testPrisma()
 describe('ColumnController', () => {
   let controller: ColumnController;
   let testId: number;
+  let testColumnId: number;
+  const testNewColumn = {
+    header: "test"
+  }
+  const testUpdateColumn = {
+    header: "test2"
+  }
 
   beforeAll(async () => {
     const { id } = await prisma.user.create({
@@ -19,6 +26,15 @@ describe('ColumnController', () => {
     })
 
     testId = id
+
+    const testColumn = await prisma.column.create({
+      data: {
+        header: "test",
+        userId: id
+      }
+    })
+
+    testColumnId = testColumn.id
   })
 
   beforeEach(async () => {
@@ -44,7 +60,29 @@ describe('ColumnController', () => {
     expect((await controller.getColumns({ id: testId }))).toBeDefined();
   });
 
+  it("Test get column by id", async () => {
+    expect((await controller.getById({ id: testId },testColumnId)).header).toBeDefined()
+  })
+
+  it("Test create new column", async () => {
+    expect((await controller.create({ id: testId }, testNewColumn)).createdAt).toBeDefined()
+  })
+
+  it("Test update column", async () => {
+    expect((await controller.update({ id: testId }, testUpdateColumn, testColumnId)).header).toBeDefined()
+  })
+
+  it("Test delete column", async () => {
+    expect((await controller.delete({ id: testId }, testId))).toBeUndefined()
+  })
+
   afterAll(async () => {
+    await prisma.column.deleteMany({
+      where: {
+        header: "test"
+      }
+    })
+
     await prisma.user.delete({
       where: {
         id: testId

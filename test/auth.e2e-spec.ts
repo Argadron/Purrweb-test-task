@@ -40,11 +40,13 @@ describe('AuthController (e2e)', () => {
     .expect(200)
   })
 
-  afterAll(() => {
-    prisma.user.delete({
+  afterAll(async () => {
+    await prisma.user.delete({
       where: {
         email: "hello@mail.ru"
       }
     })
+
+    await app.close()
   })
 });
