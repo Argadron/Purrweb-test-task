@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { AuthModule } from '../src/auth/auth.module';
 import testPrisma from '../src/prisma.forTest'
 import 'dotenv/config'
+import { ConfigModule } from '@nestjs/config';
 
 const prisma = testPrisma()
 
@@ -16,7 +17,7 @@ describe('AuthController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AuthModule]
+      imports: [AuthModule, ConfigModule.forRoot()]
     }).compile();
 
     app = moduleFixture.createNestApplication();
