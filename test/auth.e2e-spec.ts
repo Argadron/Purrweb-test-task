@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AuthModule } from '../src/auth/auth.module';
 import testPrisma from '../src/prisma.forTest'
+import 'dotenv/config'
 
 const prisma = testPrisma()
 

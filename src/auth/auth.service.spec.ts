@@ -7,6 +7,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { response } from 'express';
 import testPrisma from '../prisma.forTest'
 import { UserModule } from '../user/user.module';
+import 'dotenv/config'
 
 const prisma = testPrisma()
 
