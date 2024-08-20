@@ -9,7 +9,7 @@ import { CardModule } from './card/card.module';
 import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [UserModule, ConfigModule.forRoot(), AuthModule, ColumnModule, CardModule, CommentModule],
+  imports: [UserModule, ConfigModule.forRoot({ isGlobal: true }), AuthModule, ColumnModule, CardModule, CommentModule],
   controllers: [AppController],
   providers: [AppService],
 })
