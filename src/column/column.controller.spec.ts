@@ -14,7 +14,7 @@ describe('ColumnController', () => {
   let testId: number;
   let testColumnId: number;
   const testNewColumn = {
-    header: "test"
+    header: "testaddt"
   }
   const testUpdateColumn = {
     header: "test2"
@@ -79,7 +79,7 @@ describe('ColumnController', () => {
   afterAll(async () => {
     await prisma.column.deleteMany({
       where: {
-        header: "test"
+        header: "testaddt"
       }
     })
 
