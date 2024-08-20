@@ -3,6 +3,7 @@ on: push
 jobs: 
   init: 
     runs-on: ubuntu-latest
+    container: node:18.10.0
     services:
       postgres:
         image: postgres
