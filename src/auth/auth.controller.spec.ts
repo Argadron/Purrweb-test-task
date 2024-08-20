@@ -21,7 +21,7 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({
-        secret: "123",
+        secret: process.env.JWT_SECRET,
         global: true
       }), UserModule, ConfigModule.forRoot()],
       controllers: [AuthController],
