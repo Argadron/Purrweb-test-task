@@ -20,7 +20,8 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({
-        secret: "123"
+        secret: "123",
+        global: true
       }), UserModule],
       providers: [AuthService, PrismaService, LocalStrategy, ConfigService, JwtService],
     }).compile();
