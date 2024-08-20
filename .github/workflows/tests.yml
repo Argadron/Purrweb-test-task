@@ -16,7 +16,7 @@ jobs:
         node-varsion: [ 1.18.* ]
     steps:
       - uses: actions/checkout@v4
-      - name: "Setup Node.js":
+      - name: "Setup Node.js"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
