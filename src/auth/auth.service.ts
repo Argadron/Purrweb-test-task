@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import { UserService } from '../user/user.service';
@@ -16,17 +16,18 @@ export class AuthService {
     ) {}
 
     private async generateTokens(userId: number) {
-        console.log(this.configService.get("JWT_ACCESS_EXPIRES"))
+        const testExpires = this.configService.get("NODE_ENV") === "test" ? 50 : undefined
+
         const access = await this.jwtService.signAsync({
             id: userId,
         }, {
-            expiresIn: this.configService.get("JWT_ACCESS_EXPIRES")
+            expiresIn: testExpires ? testExpires : this.configService.get("JWT_ACCESS_EXPIRES")
         })
 
         const refresh = await this.jwtService.signAsync({
             id: userId
         }, {
-            expiresIn: this.configService.get("JWT_REFRESH_EXPIRES")
+            expiresIn: testExpires ? testExpires : this.configService.get("JWT_REFRESH_EXPIRES")
         })
 
         return { access, refresh }
@@ -71,5 +72,15 @@ export class AuthService {
         this.addRefreshToResponse(res, refresh)
 
         return { access }
+    }
+
+    async login(dto: AuthDto, res: Response) {
+        const User = await this.userService.findBy({ email: dto.email })
+
+        if (!User) throw new BadRequestException("Bad password or username")
+
+        if (!await bcrypt.compare(dto.password, User.password)) throw new BadRequestException("Bad password or username")
+
+        
     }
 }
