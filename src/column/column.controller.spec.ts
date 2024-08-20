@@ -73,7 +73,7 @@ describe('ColumnController', () => {
   })
 
   it("Test delete column", async () => {
-    expect((await controller.delete({ id: testId }, testId))).toBeUndefined()
+    expect((await controller.delete({ id: testId }, testColumnId))).toBeUndefined()
   })
 
   afterAll(async () => {
