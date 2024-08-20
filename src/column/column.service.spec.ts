@@ -58,7 +58,7 @@ describe('ColumnService', () => {
   })
 
   it("Test delete column", async () => {
-    expect((await service.delete(testId, testId))).toBeUndefined()
+    expect((await service.delete(testId, testColumnId))).toBeUndefined()
   })
 
   afterAll(async () => {
