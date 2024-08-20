@@ -7,6 +7,7 @@ import { LocalStrategy } from './strategies/jwt.stragety';
 import { ConfigService } from '@nestjs/config';
 import { response } from 'express';
 import testPrisma from '../prisma.forTest'
+import { UserModule } from '../user/user.module';
 
 const prisma = testPrisma()
 
@@ -21,7 +22,7 @@ describe('AuthController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({
         secret: "123"
-      })],
+      }), UserModule],
       controllers: [AuthController],
       providers: [AuthService, PrismaService, LocalStrategy, ConfigService, JwtService],
     }).compile();
