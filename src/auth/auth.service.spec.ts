@@ -7,6 +7,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { response } from 'express';
 import testPrisma from '../prisma.forTest'
 import { UserModule } from '../user/user.module';
+import 'dotenv/config'
 
 const prisma = testPrisma()
 
@@ -20,10 +21,9 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({
-        secret: process.env.JWT_SECRET,
-        global: true
+        secret: "secret",
       }), UserModule, ConfigModule.forRoot()],
-      providers: [AuthService, PrismaService, LocalStrategy, ConfigService, JwtService],
+      providers: [AuthService, PrismaService, LocalStrategy, ConfigService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);

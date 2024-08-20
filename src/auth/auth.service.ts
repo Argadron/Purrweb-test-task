@@ -17,7 +17,7 @@ export class AuthService {
 
     private async generateTokens(userId: number) {
         const access = await this.jwtService.signAsync({
-            id: userId
+            id: userId,
         }, {
             expiresIn: this.configService.get("JWT_ACCESS_EXPIRES")
         })
@@ -46,6 +46,8 @@ export class AuthService {
     }
 
     private addRefreshToResponse(res: Response, token: string) {
+        if (this.configService.get("NODE_ENV")) return;
+
         res.cookie(this.configService.get("REFRESH_TOKEN_COOKIE_NAME"), token, {
             httpOnly: true,
             secure: true,

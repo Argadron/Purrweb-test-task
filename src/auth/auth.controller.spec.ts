@@ -8,24 +8,24 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { response } from 'express';
 import testPrisma from '../prisma.forTest'
 import { UserModule } from '../user/user.module';
+import 'dotenv/config'
 
 const prisma = testPrisma()
 
 describe('AuthController', () => {
   let controller: AuthController;
   const testNewUser = {
-    email: "hello@mail.ru",
+    email: "hello1@mail.ru",
     password: "12345678"
   }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule.register({
-        secret: process.env.JWT_SECRET,
-        global: true
+        secret: "secret"
       }), UserModule, ConfigModule.forRoot()],
       controllers: [AuthController],
-      providers: [AuthService, PrismaService, LocalStrategy, ConfigService, JwtService],
+      providers: [AuthService, PrismaService, LocalStrategy, ConfigService],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
