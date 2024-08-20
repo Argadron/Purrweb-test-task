@@ -16,6 +16,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@helpers/*": ["./src/common/helpers/*"],
+      "@filters/*": ["./src/common/filters/*"],
+      "@interceptors/*": ["./src/common/interceptors/*"],
+      "@swagger/*":["./src/swagger/*"]
+    }
   }
 }

@@ -1,0 +1,40 @@
+name: Tests
+on: push
+jobs: 
+  init: 
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD=postgres
+        ports:
+          - 5432:5432
+
+    strategy:
+      matrix:
+        node-varsion: [ 1.18.* ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Setup Node.js":
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: "Setup enviroment variables"
+        run: |
+        echo "HOST=${{ secrets.HOST }}" >> .env
+        echo "PORT=${{ secrets.PORT }}" >> .env
+        echo "API_VERSION=${{ secrets.API_VERSION }}" >> .env
+        echo "API_CLIENT_URL=${{ secrets.API_CLIENT_URL }}" >> .env
+        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+      - name: "Install dependecies"
+        run: npm install
+      - name: "Prisma connection db"
+        run: npx prisma db push
+      - name: "Building project"
+        run: npm run build
+      - name: Unit tests
+        run: npm run test
+      - name: E2E tests
+        run: npm run test:e2e
