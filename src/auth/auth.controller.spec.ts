@@ -34,8 +34,8 @@ describe('AuthController', () => {
     expect((await controller.register(testNewUser, response)).access).toBeDefined();
   });
 
-  afterAll(() => {
-    prisma.user.delete({
+  afterAll(async () => {
+    await prisma.user.delete({
       where: {
         email: "hello@mail.ru"
       }
