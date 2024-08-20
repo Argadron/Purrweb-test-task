@@ -32,6 +32,7 @@ jobs:
           echo "JWT_ACCESS_EXPIRES=${{ secrets.JWT_ACCESS_EXPIRES }}" >> .env 
           echo "JWT_REFRESH_EXPIRES=${{ secrets.JWT_REFRESH_EXPIRSE }}" >> .env 
           echo "REFRESH_TOKEN_COOKIE_NAME=${{ secrets.REFRESH_TOKEN_COOKIE_NAME }}" >> .env
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
       - name: Install dependecies
         run: npm install
       - name: Prisma connection db
