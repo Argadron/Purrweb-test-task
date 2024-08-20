@@ -18,7 +18,7 @@ describe('ColumnService', () => {
 
   beforeAll(async () => {
     const { id } = await prisma.user.create({
-      data: { email: "test@mail.ru", password:"1234566" }
+      data: { email: "testiker@mail.ru", password:"1234566" }
     })
 
     testId = id
