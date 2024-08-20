@@ -22,7 +22,8 @@
       "@helpers/*": ["./src/common/helpers/*"],
       "@filters/*": ["./src/common/filters/*"],
       "@interceptors/*": ["./src/common/interceptors/*"],
-      "@swagger/*":["./src/swagger/*"]
+      "@swagger/*":["./src/swagger/*"],
+      "@decorators/*": ["./src/auth/decorators/*"]
     }
   }
 }

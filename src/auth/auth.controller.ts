@@ -1,9 +1,10 @@
-import { Body, Controller, HttpCode, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SwaggerBadRequest, SwaggerConflictMessage, SwaggerCreated, SwaggerOK } from '@swagger/apiResponse.interfaces';
+import { SwaggerBadRequest, SwaggerConflictMessage, SwaggerCreated, SwaggerOK, SwaggerUnauthorizedException } from '@swagger/apiResponse.interfaces';
 import { AuthDto } from './dto/auth.dto';
 import { Response } from 'express';
+import { Token } from '@decorators/get-token.decorator'
 
 @Controller('auth')
 @ApiTags("Auth controller")
@@ -28,5 +29,13 @@ export class AuthController {
   @HttpCode(200)
   async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
     return await this.authService.login(dto, res)
+  }
+
+  @ApiOperation({ summary: "Refresh tokens" })
+  @ApiResponse({ description: "Tokens refreshed", status: 200, type: SwaggerOK })
+  @ApiResponse({ description: "Token Invalid/Unauthorized", status: 401, type: SwaggerUnauthorizedException })
+  @Get("/refresh")
+  async refresh(@Token() token: string, @Res({ passthrough: true }) res: Response) {
+    return await this.authService.refresh(token, res)
   }
 }

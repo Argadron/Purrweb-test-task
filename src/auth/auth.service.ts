@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import { UserService } from '../user/user.service';
@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt'
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { JwtUser } from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -86,5 +87,21 @@ export class AuthService {
         this.addRefreshToResponse(res, refresh)
 
         return { access }
+    }
+
+    async refresh(token: string, res: Response) {
+        if (!token || !token.split("")[1]) throw new UnauthorizedException("No refresh token")
+
+        try {
+            const { id } = await this.jwtService.verifyAsync<JwtUser>(token)
+
+            const { access, refresh } = await this.generateTokens(id)
+
+            this.addRefreshToResponse(res, refresh)
+
+            return { access }
+        } catch(e) {
+            throw new UnauthorizedException("Refresh token invalid")
+        }
     }
 }
