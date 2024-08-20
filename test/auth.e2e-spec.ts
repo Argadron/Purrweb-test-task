@@ -33,6 +33,13 @@ describe('AuthController (e2e)', () => {
       .expect(201)
   });
 
+  it("/api/auth/login (POST) (Test login user)", () => {
+    return request(app.getHttpServer())
+    .post("/api/auth/login")
+    .send(testNewUser)
+    .expect(200)
+  })
+
   afterAll(() => {
     prisma.user.delete({
       where: {

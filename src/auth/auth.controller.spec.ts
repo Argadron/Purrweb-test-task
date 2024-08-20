@@ -35,6 +35,10 @@ describe('AuthController', () => {
     expect((await controller.register(testNewUser, response)).access).toBeDefined();
   });
 
+  it("Test login user", async () => {
+    expect((await controller.login(testNewUser, response)).access).toBeDefined()
+  })
+
   afterAll(async () => {
     await prisma.user.delete({
       where: {

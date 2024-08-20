@@ -33,6 +33,10 @@ describe('AuthService', () => {
     expect((await service.register(testNewUser, response)).access).toBeDefined();
   });
 
+  it("Test login user", async () => {
+    expect((await service.login(testNewUser, response)).access).toBeDefined()
+  })
+
   afterAll(async () => {
     await prisma.user.delete({
       where: {

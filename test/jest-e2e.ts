@@ -3,7 +3,7 @@ import { pathsToModuleNameMapper } from 'ts-jest'
 
 export default {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": process.cwd(),
+  "rootDir": "./",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {

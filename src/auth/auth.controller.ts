@@ -1,7 +1,7 @@
-import { Body, Controller, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Res, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SwaggerBadRequest, SwaggerConflictMessage, SwaggerCreated } from '@swagger/apiResponse.interfaces';
+import { SwaggerBadRequest, SwaggerConflictMessage, SwaggerCreated, SwaggerOK } from '@swagger/apiResponse.interfaces';
 import { AuthDto } from './dto/auth.dto';
 import { Response } from 'express';
 
@@ -18,5 +18,15 @@ export class AuthController {
   @Post("/register")
   async register(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
     return await this.authService.register(dto, res)
+  }
+
+  @ApiOperation({ summary: "Login user" })
+  @ApiResponse({ description: "User logined", status: 200, type: SwaggerOK })
+  @ApiResponse({ description: "Validation failed/Bad password or username", status: 400, type: SwaggerBadRequest })
+  @UsePipes(new ValidationPipe())
+  @Post("/login")
+  @HttpCode(200)
+  async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
+    return await this.authService.login(dto, res)
   }
 }

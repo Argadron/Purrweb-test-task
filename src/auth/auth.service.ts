@@ -81,6 +81,10 @@ export class AuthService {
 
         if (!await bcrypt.compare(dto.password, User.password)) throw new BadRequestException("Bad password or username")
 
-        
+        const { access, refresh } = await this.generateTokens(User.id)
+
+        this.addRefreshToResponse(res, refresh)
+
+        return { access }
     }
 }
