@@ -17,7 +17,7 @@ describe('CardController', () => {
   let testUserId: number;
   let testColumnId: number;
   const testNewCard = {
-    header: "testcard",
+    header: "testcardone",
     description: "supertestcard",
     columnId: 1
   }
@@ -100,7 +100,7 @@ describe('CardController', () => {
   afterAll(async () => {
     await prisma.card.deleteMany({
       where: {
-        header: "testcard"
+        header: "testcardone"
       }
     })
 

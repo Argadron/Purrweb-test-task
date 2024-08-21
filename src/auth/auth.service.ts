@@ -17,16 +17,18 @@ export class AuthService {
     ) {}
 
     private async generateTokens(userId: number) {
+        const testExpires = this.configService.get("NODE_ENV") === "test" ? 50 : undefined
+
         const access = await this.jwtService.signAsync({
             id: userId,
         }, {
-            expiresIn: this.configService.get("JWT_ACCESS_EXPIRES")
+            expiresIn: testExpires ? testExpires : this.configService.get("JWT_ACCESS_EXPIRES")
         })
 
         const refresh = await this.jwtService.signAsync({
             id: userId
         }, {
-            expiresIn: this.configService.get("JWT_REFRESH_EXPIRES")
+            expiresIn: testExpires ? testExpires : this.configService.get("JWT_REFRESH_EXPIRES")
         })
 
         return { access, refresh }
@@ -47,8 +49,6 @@ export class AuthService {
     }
 
     private addRefreshToResponse(res: Response, token: string) {
-        if (this.configService.get("NODE_ENV") === "test") return;
-
         res.cookie(this.configService.get("REFRESH_TOKEN_COOKIE_NAME"), token, {
             httpOnly: true,
             secure: true,
