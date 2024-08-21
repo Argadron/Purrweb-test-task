@@ -22,7 +22,7 @@ describe('CommentService', () => {
 
   beforeAll(async () => {
     const { id } = await prisma.user.create({
-      data: { email: "commentTestUserController@test.ru", password: "1234567" }
+      data: { email: "commentTestUserService@test.ru", password: "1234567" }
     })
 
     testUserId = id 

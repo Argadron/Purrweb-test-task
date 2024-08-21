@@ -25,7 +25,7 @@ describe('AuthController', () => {
         secret: "secret"
       }), UserModule, ConfigModule.forRoot()],
       controllers: [AuthController],
-      providers: [AuthService, PrismaService, LocalStrategy, ConfigService],
+      providers: [AuthService, PrismaService, LocalStrategy],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);

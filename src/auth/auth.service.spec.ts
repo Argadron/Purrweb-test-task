@@ -23,7 +23,7 @@ describe('AuthService', () => {
       imports: [JwtModule.register({
         secret: "secret",
       }), UserModule, ConfigModule.forRoot()],
-      providers: [AuthService, PrismaService, LocalStrategy, ConfigService],
+      providers: [AuthService, PrismaService, LocalStrategy],
     }).compile();
 
     service = module.get<AuthService>(AuthService);

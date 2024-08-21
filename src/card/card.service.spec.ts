@@ -3,6 +3,7 @@ import { CardService } from './card.service';
 import { PrismaService } from '../prisma.service';
 import testPrisma from '../prisma.forTest'
 import { CardStatusEnum } from '@prisma/client';
+import { ColumnModule } from '../column/column.module';
 
 const prisma = testPrisma()
 
@@ -54,6 +55,7 @@ describe('CardService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ColumnModule],
       providers: [CardService, PrismaService],
     }).compile();
 
