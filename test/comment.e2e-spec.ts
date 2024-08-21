@@ -1,17 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommentController } from './comment.controller';
-import { CommentService } from './comment.service';
-import { PrismaService } from '../prisma.service';
-import { CardModule } from '../card/card.module';
-import testPrisma from '../prisma.forTest'
-import { JwtGuard } from '../auth/guards/jwt.guard';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { CommentModule } from '../src/comment/comment.module';
+import testPrisma from '../src/prisma.forTest'
+import { JwtGuard } from '../src/auth/guards/jwt.guard';
 import { Request } from 'express';
 
 const prisma = testPrisma()
 
-describe('CommentController', () => {
-  let controller: CommentController;
+describe('CommentController (e2e)', () => {
+  let app: INestApplication;
   let testUserId: number;
   let testColumnId: number; 
   let testCardId: number;
@@ -64,10 +62,8 @@ describe('CommentController', () => {
   })
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [CardModule],
-      controllers: [CommentController],
-      providers: [CommentService, PrismaService],
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [CommentModule],
     }).overrideGuard(JwtGuard).useValue({
       canActivate: (ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest<Request>()
@@ -80,27 +76,42 @@ describe('CommentController', () => {
       }
     }).compile();
 
-    controller = module.get<CommentController>(CommentController);
+    app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix("/api")
+
+    await app.init();
   });
 
-  it('Test get all comments', async () => {
-    expect((await controller.getAll({ id: testUserId }, testCardId))).toBeDefined();
+  it('/api/comment/all (GET) (Test get all comments)', () => {
+    return request(app.getHttpServer())
+      .get('/api/comment/all')
+      .expect(200)
   });
 
-  it("Test get comment by id", async () => {
-    expect((await controller.getById({ id: testUserId }, testCommentId)).createdAt).toBeDefined()
+  it("/api/comment/id/:id (GET) (Test get comment by id)", () => {
+    return request(app.getHttpServer())
+    .get(`/api/comment/${testCommentId}`)
+    .expect(200)
   })
 
-  it("Test create new comment", async () => {
-    expect((await controller.create({ id: testUserId }, testNewComment)).authorId).toBeDefined()
+  it("/api/comment/new (POST) (Test create new comment)", () => {
+    return request(app.getHttpServer())
+    .post("/api/comment/new")
+    .send(testNewComment)
+    .expect(201)
   })
 
-  it("Test update comment", async () => {
-    expect((await controller.update({ id: testUserId }, testUpdateComment, testCommentId)).updatedAt).toBeDefined()
+  it("/api/comment/update/:id (PUT) (Test update comment)", () => {
+    return request(app.getHttpServer())
+    .put(`/api/comment/update/${testCommentId}`)
+    .send(testUpdateComment)
+    .expect(200)
   })
 
-  it("Test delete comment", async () => {
-    expect((await controller.delete({ id: testUserId }, testCommentId))).toBeUndefined()
+  it("/api/comment/delete/:id (DELETE) (Test delete comment)", () => {
+    return request(app.getHttpServer())
+    .delete(`/api/comment/delete/${testCommentId}`)
+    .expect(204)
   })
 
   afterAll(async () => {
@@ -127,5 +138,7 @@ describe('CommentController', () => {
         id: testUserId
       }
     })
+
+    await app.close()
   })
 });

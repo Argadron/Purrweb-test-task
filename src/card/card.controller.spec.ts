@@ -78,7 +78,7 @@ describe('CardController', () => {
   });
 
   it('Test get all cards', async () => {
-    expect((await controller.getAll({ id: testUserId }))).toBeDefined();
+    expect((await controller.getAll({ id: testUserId }, testColumnId))).toBeDefined();
   });
 
   it("Test get card by id", async () => {

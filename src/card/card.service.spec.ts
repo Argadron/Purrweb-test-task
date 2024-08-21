@@ -61,7 +61,7 @@ describe('CardService', () => {
   });
 
   it('Test get all cards', async () => {
-    expect((await service.getAll(testUserId))).toBeDefined();
+    expect((await service.getAll(testUserId, testColumnId))).toBeDefined();
   });
 
   it("Test get card by id", async () => {

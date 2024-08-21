@@ -15,14 +15,14 @@ export class OptionalValidatorPipe implements PipeTransform {
         let check = false;
 
         for (let i in value) {
-            if (value[i] === "" || !value) continue
+            if (value[i] === "" || !value || typeof(value) !== "object" || value?.id) continue
 
             if (this.plants.includes(i)) check = true
         }
 
         value === undefined ? check = true : null
-
-        if (!check && !value?.id) throw new BadRequestException(`One of optional plants must be writed: ${this.plants}`)
+        
+        if (!check && typeof(value) === "object" && !value?.id) throw new BadRequestException(`One of optional plants must be writed: ${this.plants}`)
 
         return value
     }

@@ -52,6 +52,7 @@ model Card {
   column Column @relation(fields: [columnId], references: [id])
   userId Int @map("user_id")
   user User @relation(fields: [userId], references: [id])
+  comment Comment[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
@@ -63,8 +64,10 @@ model Comment {
   id Int @unique @default(autoincrement())
   text String 
 
-  authorId Int 
+  authorId Int @map("author_id")
   author User @relation(fields: [authorId], references: [id])
+  cardId Int @map("card_id")
+  card Card @relation(fields: [cardId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")

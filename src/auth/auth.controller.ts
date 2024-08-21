@@ -28,7 +28,6 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @Post("/login")
   @HttpCode(200)
-  @Auth()
   async login(@Body() dto: AuthDto, @Res({ passthrough: true }) res: Response) {
     return await this.authService.login(dto, res)
   }
@@ -36,7 +35,7 @@ export class AuthController {
   @ApiOperation({ summary: "Refresh tokens" })
   @ApiResponse({ description: "Tokens refreshed", status: 200, type: SwaggerOK })
   @ApiResponse({ description: "Token Invalid/Unauthorized", status: 401, type: SwaggerUnauthorizedException })
-  @ApiCookieAuth()
+  @ApiCookieAuth(process.env.REFRESH_TOKEN_COOKIE_NAME)
   @Get("/refresh")
   async refresh(@Token() token: string, @Res({ passthrough: true }) res: Response) {
     return await this.authService.refresh(token, res)

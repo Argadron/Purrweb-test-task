@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { CardStatusEnum } from "@prisma/client";
-import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { Expose } from "class-transformer";
+import { IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 
 export class UpdateCardDto {
     @ApiProperty({
@@ -14,6 +15,7 @@ export class UpdateCardDto {
     @IsString()
     @MinLength(1)
     @IsNotEmpty()
+    @Expose()
     readonly header?: string;
 
     @ApiProperty({
@@ -27,6 +29,7 @@ export class UpdateCardDto {
     @IsString()
     @MinLength(3)
     @IsNotEmpty()
+    @Expose()
     readonly description?: string;
 
     @ApiProperty({
@@ -35,5 +38,9 @@ export class UpdateCardDto {
         example: CardStatusEnum.COMPLETED,
         required: false
     })
+    @IsEnum(CardStatusEnum)
+    @IsNotEmpty()
+    @IsOptional()
+    @Expose()
     readonly status?: CardStatusEnum
 }

@@ -2,10 +2,13 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { PrismaService } from '../prisma.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { ColumnService } from '../column/column.service';
 
 @Injectable()
 export class CardService {
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(private readonly prismaService: PrismaService,
+                private readonly columnService: ColumnService
+    ) {}
 
     /**
      * This method validate card: Card exsits and card.userid === userid. Or throw errors.
@@ -27,10 +30,11 @@ export class CardService {
         return card
     }
 
-    async getAll(userId: number) {
+    async getAll(userId: number, id: number) {
         return await this.prismaService.card.findMany({
             where: {
-                userId
+                userId,
+                columnId: id
             }
         })
     }
@@ -40,6 +44,8 @@ export class CardService {
     }
 
     async create(userId: number, dto: CreateCardDto) {
+        await this.columnService.getById(userId, dto.columnId)
+
         return await this.prismaService.card.create({
             data: {
                 userId,

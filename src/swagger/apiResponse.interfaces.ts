@@ -1,13 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class SwaggerJwtUser {
-    @ApiProperty({ description: "Access token", default: "epfkpgdkgfdpdddgdk" })
-    readonly access: string;
-
-    @ApiProperty({ description: "Refresh token (only development mode)", default: "egpfdkg[pd" })
-    readonly refresh: string;
-}
-
 export class SwaggerOK {
     @ApiProperty({ description: "Code from response", default: 200 })
     readonly statusCode: number;

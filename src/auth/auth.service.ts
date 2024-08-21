@@ -17,18 +17,16 @@ export class AuthService {
     ) {}
 
     private async generateTokens(userId: number) {
-        const testExpires = this.configService.get("NODE_ENV") === "test" ? 50 : undefined
-
         const access = await this.jwtService.signAsync({
             id: userId,
         }, {
-            expiresIn: testExpires ? testExpires : this.configService.get("JWT_ACCESS_EXPIRES")
+            expiresIn: this.configService.get("JWT_ACCESS_EXPIRES")
         })
 
         const refresh = await this.jwtService.signAsync({
             id: userId
         }, {
-            expiresIn: testExpires ? testExpires : this.configService.get("JWT_REFRESH_EXPIRES")
+            expiresIn: this.configService.get("JWT_REFRESH_EXPIRES")
         })
 
         return { access, refresh }

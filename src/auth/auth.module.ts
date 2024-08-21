@@ -13,6 +13,6 @@ import { UserModule } from '../user/user.module';
     global: true
   }), UserModule],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, LocalStrategy, ConfigService, JwtService],
+  providers: [AuthService, PrismaService, LocalStrategy, ConfigService],
 })
 export class AuthModule {}

@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { SwaggerOK, SwaggerUnauthorizedException } from '@swagger/apiResponse.interfaces';
 import { User } from '@decorators/get-user.decorator';
 import { JwtUser } from '../auth/interfaces';
+import { Auth } from '@decorators/auth.decorator';
 
 @Controller('user')
 @ApiTags("Users controller")
@@ -14,6 +15,7 @@ export class UserController {
   @ApiResponse({ description: "Profile sended", status: 200, type: SwaggerOK })
   @ApiResponse({ description: "Token Invalid/Unauthorized", status: 401, type: SwaggerUnauthorizedException })
   @ApiBearerAuth()
+  @Auth()
   @Get("/profile")
   async getProfile(@User() user: JwtUser) {
     return await this.userService.getById(user.id)

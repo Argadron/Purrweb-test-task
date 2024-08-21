@@ -8,5 +8,6 @@ import { ColumnModule } from '../column/column.module';
   imports: [ColumnModule],
   controllers: [CardController],
   providers: [CardService, PrismaService],
+  exports: [CardService]
 })
 export class CardModule {}
